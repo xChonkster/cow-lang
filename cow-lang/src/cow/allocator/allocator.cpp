@@ -38,7 +38,7 @@ void* allocator::allocate( size_t size )
 	if ( base )
 	{
 		const uintptr_t data = reinterpret_cast<uintptr_t>(base->data);
-		const uintptr_t current = (data + offset + alignment - 1) & ~(alignment - 1); // will be atleast base + (alignment - 1) bytes (probably 7 since were on 64bit)
+		const uintptr_t current = (data + offset + alignment - 1) & ~(alignment - 1); // least significant 3 bits (in this case) are zeroed, so we can only allocate in steps of `alignment` bytes
 
 		if ( current + size <= data + sizeof( base->data ) )
 		{
