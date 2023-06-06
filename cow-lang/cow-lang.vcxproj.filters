@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="src\cow-lang.cpp" />
+    <ClCompile Include="src\cow\vm\vm.cpp" />
+    <ClCompile Include="src\cow\instruction\instruction.cpp" />
+    <ClCompile Include="src\cow\lexer\lexer.cpp" />
+    <ClCompile Include="src\cow\compiler\compiler.cpp" />
+    <ClCompile Include="src\cow\allocator\allocator.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\cow\vm\vm.hpp" />
+    <ClInclude Include="src\cow\cow.hpp" />
+    <ClInclude Include="src\cow\instruction\instruction.hpp" />
+    <ClInclude Include="src\cow\lexer\lexer.hpp" />
+    <ClInclude Include="src\cow\object\object.hpp" />
+    <ClInclude Include="src\cow\compiler\compiler.hpp" />
+    <ClInclude Include="src\cow\allocator\allocator.hpp" />
+    <ClInclude Include="src\cow\common.hpp" />
+  </ItemGroup>
+</Project>
