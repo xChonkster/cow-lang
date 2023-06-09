@@ -3,7 +3,7 @@
 namespace cow
 {
 
-allocator::allocator( )
+allocator::allocator()
 	: base( static_cast<page*>(operator new(sizeof( page ))) )
 {
 	base->next = nullptr;
@@ -17,7 +17,7 @@ allocator::allocator( allocator&& other ) noexcept
 	other.offset = NULL;
 }
 
-allocator::~allocator( )
+allocator::~allocator()
 {
 	page* current = base;
 

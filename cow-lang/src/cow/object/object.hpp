@@ -2,12 +2,22 @@
 
 #include "../cow.hpp"
 
+namespace cow
+{
+
+namespace object
+{
+
 // instruction typedef
-typedef uint64_t cow_instruction;
+typedef uint16_t instruction;
 
 // cow function object
-struct cow_function
+struct function
 {
 	size_t ninstructions; // size of bytecode
-	cow_instruction* instructions; // bytecode
+	instruction* instructions; // bytecode
 };
+
+} // namespace object
+
+} // namespace cow

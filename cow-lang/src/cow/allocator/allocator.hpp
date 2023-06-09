@@ -8,11 +8,11 @@ namespace cow
 class allocator
 {
 public:
-	void* allocate(size_t size);
+	void* allocate( size_t size );
 
 public:
 	allocator();
-	allocator(allocator&& other) noexcept;
+	allocator( allocator&& other ) noexcept;
 
 	~allocator();
 

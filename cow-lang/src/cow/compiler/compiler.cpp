@@ -1,25 +1,24 @@
 #include "./compiler.hpp"
 
 #include "../lexer/lexer.hpp"
-#include "../allocator/allocator.hpp"
+
+#include "../bytecode/bytecode.hpp"
 
 namespace cow
 {
 
+namespace compiler
+{
+
 std::string compile( const std::string& source )
 {
-	cow::allocator allocator;
+	const std::vector<lexer::token> tokens = lexer::tokenize( source );
 
-	std::uint8_t* memory = reinterpret_cast<std::uint8_t*>(allocator.allocate( 0 ));
+	serializer serializer;
 
-	memory[0] = 'a';
-	memory[1] = 'b';
-	memory[2] = 'c';
-	memory[3] = '\0';
-
-	std::printf( "%s\n", memory );
-
-	return "soon:tm:";
+	return serializer.serialize( tokens );
 }
+
+} // namespace compiler
 
 } // namespace cow

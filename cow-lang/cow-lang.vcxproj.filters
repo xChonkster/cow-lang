@@ -7,6 +7,7 @@
     <ClCompile Include="src\cow\lexer\lexer.cpp" />
     <ClCompile Include="src\cow\compiler\compiler.cpp" />
     <ClCompile Include="src\cow\allocator\allocator.cpp" />
+    <ClCompile Include="src\cow\bytecode\bytecode.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\cow\vm\vm.hpp" />
@@ -17,5 +18,6 @@
     <ClInclude Include="src\cow\compiler\compiler.hpp" />
     <ClInclude Include="src\cow\allocator\allocator.hpp" />
     <ClInclude Include="src\cow\common.hpp" />
+    <ClInclude Include="src\cow\bytecode\bytecode.hpp" />
   </ItemGroup>
 </Project>
