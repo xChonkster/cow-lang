@@ -5,9 +5,6 @@
 
 #include <windows.h>
 #include <iostream>
-#include <bitset>
-#include <format>
-#include <fstream>
 
 // hello world in moolang
 constexpr static const char* source = R"( MoO MoO MoO MoO MoO MoO MoO MoO MOO moO MoO MoO MoO MoO MoO moO MoO MoO MoO MoO moO MoO MoO MoO MoO moO MoO MoO MoO MoO MoO MoO MoO
@@ -18,10 +15,11 @@ constexpr static const char* source = R"( MoO MoO MoO MoO MoO MoO MoO MoO MOO mo
 int main()
 {
 	SetConsoleTitleA( "MOO!" );
-
+	
 	const std::string compiled = cow::compiler::compile( source );
 
 	cow::vm::load( compiled );
-
+	
 	std::cin.get();
 }
+

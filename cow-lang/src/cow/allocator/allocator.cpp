@@ -61,4 +61,5 @@ void* allocator::allocate( size_t size )
 	return newpage->data;
 }
 
-}
+} // namespace cow
+

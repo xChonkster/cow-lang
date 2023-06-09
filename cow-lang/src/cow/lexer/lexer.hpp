@@ -2,10 +2,7 @@
 
 #include "../cow.hpp"
 
-namespace cow
-{
-
-namespace lexer
+namespace cow::lexer
 {
 
 enum class token : uint16_t
@@ -26,6 +23,5 @@ enum class token : uint16_t
 
 std::vector<token> tokenize( const std::string& lexer );
 
-}; // namespace lexer
+} // namespace cow::lexer
 
-} // namespace cow

@@ -4,10 +4,7 @@
 #include "../bytecode/bytecode.hpp"
 #include "../instruction/instruction.hpp"
 
-namespace cow
-{
-
-namespace vm
+namespace cow::vm
 {
 
 void load( const std::string& bytecode )
@@ -17,7 +14,8 @@ void load( const std::string& bytecode )
 
 	const object::function* function = deserializer.deserialize( bytecode );
 
-	vm::execute( function );
+	if ( function )
+		vm::execute( function );
 }
 
 void execute( const object::function* function )
@@ -25,93 +23,89 @@ void execute( const object::function* function )
 	const size_t ninstructions = function->ninstructions;
 	const object::instruction* instructions = function->instructions;
 
-	size_t ip = 0;
-	size_t last_loop_start_ip = 0;
-	size_t last_loop_end_ip = 0; // so op
+	uint64_t ip = 0; // instruction pointer
 
 	uint32_t stack[1024]{ 0 }; // stack space
 	uint32_t* sp = stack; // stack pointer
 
+	bool cleared = true;
 	uint32_t r32 = 0u; // register for MMM instruction
 
 	while ( ip < ninstructions )
 	{
 	start:
-		instruction::opcode instruction = static_cast<instruction::opcode>(instructions[ip]);
+		object::instruction instruction = instructions[ip];
+		instruction::opcode OP = instruction::INSN_OP( instruction );
 
 	dispatch:
-		if ( instruction == instruction::opcode::moo )
+		if ( OP == instruction::opcode::moo )
 		{
-			if ( static_cast<instruction::opcode>(instructions[ip - 1]) != instruction::opcode::MOO )
-				last_loop_end_ip = ip;
-
-			ip = last_loop_start_ip;
+			ip += instruction::INSN_A<int32_t>( instruction ); // most OP thing ever...
 
 			goto start;
 		}
-		else if ( instruction == instruction::opcode::mOo )
+		else if ( OP == instruction::opcode::mOo )
 		{
 			sp--;
 		}
-		else if ( instruction == instruction::opcode::moO )
+		else if ( OP == instruction::opcode::moO )
 		{
 			sp++;
 		}
-		else if ( instruction == instruction::opcode::mOO )
+		else if ( OP == instruction::opcode::mOO )
 		{
-			instruction = static_cast<instruction::opcode>(*sp);
+			OP = static_cast<instruction::opcode>(*sp);
 
 			goto dispatch;
 		}
-		else if ( instruction == instruction::opcode::Moo )
+		else if ( OP == instruction::opcode::Moo )
 		{
 			if ( *sp == 0 )
-				*sp = static_cast<uint32_t>(getchar()); // c code ewwie (jk lol..)
+				*sp = static_cast<uint32_t>(getchar());
 			else
 				putchar( static_cast<int>(*sp) );
 		}
-		else if ( instruction == instruction::opcode::MOo )
+		else if ( OP == instruction::opcode::MOo )
 		{
 			(*sp)--;
 		}
-		else if ( instruction == instruction::opcode::MoO )
+		else if ( OP == instruction::opcode::MoO )
 		{
 			(*sp)++;
 		}
-		else if ( instruction == instruction::opcode::MOO )
+		else if ( OP == instruction::opcode::MOO )
 		{
-			if ( static_cast<instruction::opcode>(instructions[ip + 1]) != instruction::opcode::moo )
-				last_loop_start_ip = ip;
-
 			if ( *sp == 0 )
 			{
-				ip = last_loop_end_ip + 1;
+				ip += instruction::INSN_A<int32_t>( instruction ); // already has + 1
 
 				goto start;
 			}
 		}
-		else if ( instruction == instruction::opcode::OOO )
+		else if ( OP == instruction::opcode::OOO )
 		{
 			*sp = 0;
 		}
-		else if ( instruction == instruction::opcode::MMM )
+		else if ( OP == instruction::opcode::MMM )
 		{
-			if ( r32 == 0 )
+			if ( cleared )
 			{
 				r32 = *sp;
+
+				cleared = false;
 			}
 			else
 			{
 				*sp = r32;
 
-				r32 = 0;
+				cleared = true;
 			}
 		}
-		else if ( instruction == instruction::opcode::OOM )
+		else if ( OP == instruction::opcode::OOM )
 		{
-			std::printf( "%ud\n", *sp );
+			std::printf( "%u\n", *sp );
 		}
-		else if ( instruction == instruction::opcode::oom )
+		else if ( OP == instruction::opcode::oom )
 		{
 			uint32_t integer = 0u;
 			uint32_t result = static_cast<uint32_t>(scanf_s( "%d", &integer )); // lets just hope scanf succeeds...
@@ -123,6 +117,5 @@ void execute( const object::function* function )
 	} // interpreter loop
 }
 
-} // namespace vm
+} // namespace cow::vm
 
-} // namespace cow

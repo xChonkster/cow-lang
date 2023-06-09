@@ -3,16 +3,12 @@
 #include "../cow.hpp"
 #include "../object/object.hpp"
 
-namespace cow
-{
-
-namespace vm
+namespace cow::vm
 {
 
 void load( const std::string& bytecode );
 
 void execute( const object::function* function );
 
-} // namespace vm
+} // namespace cow::vm
 
-} // namespace cow

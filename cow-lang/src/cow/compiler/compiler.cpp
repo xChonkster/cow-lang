@@ -1,13 +1,12 @@
 #include "./compiler.hpp"
 
 #include "../lexer/lexer.hpp"
-
 #include "../bytecode/bytecode.hpp"
+#include "../parser/parser.hpp"
 
-namespace cow
-{
+// write new parser class, parser takes in tokens and serializer, does the work and serializes it (gg loops)
 
-namespace compiler
+namespace cow::compiler
 {
 
 std::string compile( const std::string& source )
@@ -16,9 +15,20 @@ std::string compile( const std::string& source )
 
 	serializer serializer;
 
-	return serializer.serialize( tokens );
+	parser parser{ tokens, serializer };
+
+	try
+	{
+		parser.get_loop_information();
+		parser.parse();
+
+		return serializer.finalize();
+	}
+	catch ( parser_error message )
+	{
+		return parser.error( message );
+	}
 }
 
-} // namespace compiler
+} // namespace cow::compiler
 
-} // namespace cow

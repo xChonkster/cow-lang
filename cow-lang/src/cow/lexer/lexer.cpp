@@ -1,9 +1,6 @@
 #include "./lexer.hpp"
 
-namespace cow
-{
-
-namespace lexer
+namespace cow::lexer
 {
 
 std::vector<token> tokenize( const std::string& content )
@@ -78,6 +75,4 @@ std::vector<token> tokenize( const std::string& content )
 	return tokens;
 }
 
-} // namespace lexer
-
-} // namespace cow
+} // namespace cow::lexer

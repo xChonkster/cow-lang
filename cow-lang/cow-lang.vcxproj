@@ -23,8 +23,8 @@
     <ClCompile Include="src\cow\allocator\allocator.cpp" />
     <ClCompile Include="src\cow\bytecode\bytecode.cpp" />
     <ClCompile Include="src\cow\compiler\compiler.cpp" />
-    <ClCompile Include="src\cow\instruction\instruction.cpp" />
     <ClCompile Include="src\cow\lexer\lexer.cpp" />
+    <ClCompile Include="src\cow\parser\parser.cpp" />
     <ClCompile Include="src\cow\vm\vm.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -35,6 +35,7 @@
     <ClInclude Include="src\cow\instruction\instruction.hpp" />
     <ClInclude Include="src\cow\lexer\lexer.hpp" />
     <ClInclude Include="src\cow\object\object.hpp" />
+    <ClInclude Include="src\cow\parser\parser.hpp" />
     <ClInclude Include="src\cow\vm\vm.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

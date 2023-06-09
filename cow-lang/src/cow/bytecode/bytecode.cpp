@@ -3,14 +3,8 @@
 namespace cow
 {
 
-std::string serializer::serialize( const std::vector<lexer::token>& tokens )
+std::string serializer::finalize()
 {
-	stream.str( std::string() ); // clear stringstream
-
-	write<size_t>( tokens.size() );
-
-	stream.write( reinterpret_cast<const char*>(tokens.data()), tokens.size() * sizeof( object::instruction ) );
-
 	return stream.str();
 }
 
@@ -23,6 +17,15 @@ deserializer::deserializer( allocator& allocator )
 object::function* deserializer::deserialize( const std::string& bytecode )
 {
 	stream.str( bytecode ); // initialize stream
+
+	const uint8_t success = read<uint8_t>(); // did compilation succeed?
+
+	if ( !success )
+	{
+		std::printf( "failed to load bytecode: %s\n", bytecode.c_str() + sizeof( char ) ); // rest of the string is the error message
+
+		return NULL;
+	}
 
 	const size_t ninstructions = read<size_t>(); // read instruction count (8 bytes);
 	
@@ -38,3 +41,4 @@ object::function* deserializer::deserialize( const std::string& bytecode )
 }
 
 } // namespace cow
+

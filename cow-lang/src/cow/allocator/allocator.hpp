@@ -30,3 +30,4 @@ private:
 }; // class would be static but thats a horrible idea so nvm
 
 } // namespace cow::allocator
+

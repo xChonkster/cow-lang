@@ -13,9 +13,8 @@ namespace cow
 class serializer
 {
 public:
-	std::string serialize( const std::vector<lexer::token>& tokens );
+	std::string finalize();
 
-private:
 	template <typename T>
 	void write( T value )
 	{
