@@ -23,7 +23,7 @@ void execute( const object::function* function )
 	const size_t ninstructions = function->ninstructions;
 	const object::instruction* instructions = function->instructions;
 
-	uint64_t ip = 0; // instruction pointer
+	uintptr_t ip = 0; // instruction pointer
 
 	uint32_t stack[1024]{ 0 }; // stack space
 	uint32_t* sp = stack; // stack pointer
