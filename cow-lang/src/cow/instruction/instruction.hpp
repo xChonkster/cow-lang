@@ -4,9 +4,6 @@
 
 #include "../object/object.hpp"
 
-template <typename T>
-concept is_signed_or_unsigned_short = std::_Is_any_of_v<T, int16_t, uint16_t>;
-
 namespace cow::instruction
 {
 
