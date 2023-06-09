@@ -30,7 +30,6 @@
   <ItemGroup>
     <ClInclude Include="src\cow\allocator\allocator.hpp" />
     <ClInclude Include="src\cow\bytecode\bytecode.hpp" />
-    <ClInclude Include="src\cow\common.hpp" />
     <ClInclude Include="src\cow\compiler\compiler.hpp" />
     <ClInclude Include="src\cow\cow.hpp" />
     <ClInclude Include="src\cow\instruction\instruction.hpp" />

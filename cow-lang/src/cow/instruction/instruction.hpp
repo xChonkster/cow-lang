@@ -24,8 +24,6 @@ enum class opcode : object::instruction
 	MMM,
 	OOM,
 	oom,
-
-	nop
 };
 
 } // namespace instruction

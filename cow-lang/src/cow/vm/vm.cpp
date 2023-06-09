@@ -26,11 +26,12 @@ void execute( const object::function* function )
 	const object::instruction* instructions = function->instructions;
 
 	size_t ip = 0;
-	size_t last_loop_start_ip = static_cast<size_t>(-1);
-	size_t last_loop_end_ip = static_cast<size_t>(-1); // so op
+	size_t last_loop_start_ip = 0;
+	size_t last_loop_end_ip = 0; // so op
 
-	uint32_t stack[static_cast<uint16_t>(-1)]{ 0 }; // stack space
+	uint32_t stack[1024]{ 0 }; // stack space
 	uint32_t* sp = stack; // stack pointer
+
 	uint32_t r32 = 0u; // register for MMM instruction
 
 	while ( ip < ninstructions )
@@ -113,7 +114,7 @@ void execute( const object::function* function )
 		else if ( instruction == instruction::opcode::oom )
 		{
 			uint32_t integer = 0u;
-			int32_t result = scanf_s( "%d", &integer ); // lets just hope scanf succeeds...
+			uint32_t result = static_cast<uint32_t>(scanf_s( "%d", &integer )); // lets just hope scanf succeeds...
 
 			*sp = result;
 		}
