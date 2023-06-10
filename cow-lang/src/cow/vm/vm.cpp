@@ -48,13 +48,13 @@ void execute( const object::function* function )
 		}
 		case instruction::opcode::mOo:
 		{
-			sp--;
+			sp -= instruction::INSN_A<uint32_t>( instruction );
 
 			break;
 		}
 		case instruction::opcode::moO:
 		{
-			sp++;
+			sp += instruction::INSN_A<uint32_t>( instruction );
 
 			break;
 		}
@@ -75,13 +75,13 @@ void execute( const object::function* function )
 		}
 		case instruction::opcode::MOo:
 		{
-			(*sp)--;
+			*sp -= instruction::INSN_A<uint32_t>(instruction);
 
 			break;
 		}
 		case instruction::opcode::MoO:
 		{
-			(*sp)++;
+			*sp += instruction::INSN_A<uint32_t>(instruction);
 
 			break;
 		}
@@ -139,7 +139,7 @@ void execute( const object::function* function )
 			return;
 		}
 		default:
-			__assume(false); // will never happen (unless someone mOO's a bogus instruction in which case we segfault) so optimize into jumptable
+			COW_SWITCH_UNREACHABLE(); // will never happen (unless someone mOO's a bogus instruction in which case we segfault) so optimize into jumptable
 
 		}
 

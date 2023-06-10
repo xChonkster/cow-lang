@@ -3,15 +3,45 @@
 namespace cow
 {
 
-parser::parser( const std::vector<lexer::token>& tokens, serializer& serializer )
+parser::parser( std::vector<lexer::token>& tokens, serializer& serializer )
 	: tokens( tokens ), _serializer( serializer )
 {
+}
+
+void parser::get_arith_information()
+{
+	for ( uint32_t ip = 0; ip < tokens.size(); ip++ )
+	{
+		const auto get_sequence_size = [&] (lexer::token token) -> uint32_t
+		{
+			uint32_t current = ip;
+
+			while ( tokens[current] == token )
+				current++;
+
+			return current - ip;
+		};
+
+		const lexer::token& token = tokens[ip];
+
+		if ( token == lexer::token::MoveMemoryBackward || token == lexer::token::MoveMemoryForward || token == lexer::token::DecrementMemoryValue || token == lexer::token::IncrementMemoryValue )
+		{
+			const uint32_t size = get_sequence_size( token );
+
+			arithinfo.insert( { ip, size } );
+
+			if ( size > 1 )
+				tokens.erase( tokens.begin() + ip + 1, tokens.begin() + ip + size); // erase the instructions
+			// this is a very bad solution to this problem (imo)
+			// use linked list token allocator for next project
+		}
+	}
 }
 
 void parser::get_loop_information()
 {
 	// [depth, ip]
-	std::unordered_multimap<uint32_t, uint32_t> jumps = {};
+	std::unordered_multimap<uint32_t, uint32_t> jumps = {}; // hm (should get deepest loop depth from lexer so i can properly alloc 2d array, next project...)
 	uint32_t loop_level = 0;
 
 	// look foor loop tokens, store each one by loop depth
@@ -57,16 +87,38 @@ void parser::parse()
 	{
 		const lexer::token& token = tokens[ip];
 
-		if ( token == lexer::token::LoopEnd )
+		switch ( token )
+		{
+
+		case lexer::token::LoopEnd:
 		{
 			emitOPA( instruction::opcode::moo, jmpinfo[ip] );
+
+			break;
 		}
-		else if ( token == lexer::token::LoopStart )
+		case lexer::token::LoopStart:
 		{
 			emitOPA( instruction::opcode::MOO, jmpinfo[ip] );
+
+			break;
 		}
-		else
+		case lexer::token::MoveMemoryBackward:
+		case lexer::token::MoveMemoryForward:
+		case lexer::token::DecrementMemoryValue:
+		case lexer::token::IncrementMemoryValue:
+		{
+			emitOPA( static_cast<instruction::opcode>(token), arithinfo[ip]);
+
+			break;
+		}
+		default:
+		{
 			emitOP( static_cast<instruction::opcode>(token) );
+
+			break;
+		}
+
+		}
 	}
 }
 

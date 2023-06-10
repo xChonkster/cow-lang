@@ -18,8 +18,9 @@ using parser_error = std::runtime_error;
 class parser
 {
 public:
-	parser( const std::vector<lexer::token>& tokens, serializer& serializer );
+	parser( std::vector<lexer::token>& tokens, serializer& serializer );
 
+	void get_arith_information();
 	void get_loop_information();
 	void parse();
 
@@ -33,7 +34,10 @@ private:
 	// [ip, rel64]
 	std::unordered_map<uint32_t, uint32_t> jmpinfo;
 
-	const std::vector<lexer::token>& tokens;
+	// [ip, size]
+	std::unordered_map<uint32_t, uint32_t> arithinfo;
+
+	std::vector<lexer::token>& tokens;
 	serializer& _serializer;
 };
 

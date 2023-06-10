@@ -14,6 +14,8 @@ public:
 	allocator();
 	allocator( allocator&& other ) noexcept;
 
+	allocator( allocator& other ) = delete;
+
 	~allocator();
 
 private:
@@ -29,5 +31,5 @@ private:
 	size_t offset{ 0 };
 }; // class would be static but thats a horrible idea so nvm
 
-} // namespace cow::allocator
+} // namespace cow
 
