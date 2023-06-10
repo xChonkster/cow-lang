@@ -20,7 +20,6 @@ void load( const std::string& bytecode )
 
 void execute( const object::function* function )
 {
-	const size_t ninstructions = function->ninstructions;
 	const object::instruction* instructions = function->instructions;
 
 	uintptr_t ip = 0; // instruction pointer
@@ -31,49 +30,62 @@ void execute( const object::function* function )
 	bool cleared = true;
 	uint32_t r32 = 0u; // register for MMM instruction
 
-	while ( ip < ninstructions )
+	while ( true )
 	{
 	start:
 		object::instruction instruction = instructions[ip];
 		instruction::opcode OP = instruction::INSN_OP( instruction );
 
 	dispatch:
-		if ( OP == instruction::opcode::moo )
+		switch ( OP )
+		{
+
+		case instruction::opcode::moo:
 		{
 			ip += instruction::INSN_A<int32_t>( instruction ); // most OP thing ever...
 
 			goto start;
 		}
-		else if ( OP == instruction::opcode::mOo )
+		case instruction::opcode::mOo:
 		{
 			sp--;
+
+			break;
 		}
-		else if ( OP == instruction::opcode::moO )
+		case instruction::opcode::moO:
 		{
 			sp++;
+
+			break;
 		}
-		else if ( OP == instruction::opcode::mOO )
+		case instruction::opcode::mOO:
 		{
 			OP = static_cast<instruction::opcode>(*sp);
 
 			goto dispatch;
 		}
-		else if ( OP == instruction::opcode::Moo )
+		case instruction::opcode::Moo:
 		{
 			if ( *sp == 0 )
 				*sp = static_cast<uint32_t>(getchar());
 			else
 				putchar( static_cast<int>(*sp) );
+
+			break;
 		}
-		else if ( OP == instruction::opcode::MOo )
+		case instruction::opcode::MOo:
 		{
 			(*sp)--;
+
+			break;
 		}
-		else if ( OP == instruction::opcode::MoO )
+		case instruction::opcode::MoO:
 		{
 			(*sp)++;
+
+			break;
 		}
-		else if ( OP == instruction::opcode::MOO )
+		case instruction::opcode::MOO:
 		{
 			if ( *sp == 0 )
 			{
@@ -81,12 +93,16 @@ void execute( const object::function* function )
 
 				goto start;
 			}
+
+			break;
 		}
-		else if ( OP == instruction::opcode::OOO )
+		case instruction::opcode::OOO:
 		{
 			*sp = 0;
+
+			break;
 		}
-		else if ( OP == instruction::opcode::MMM )
+		case instruction::opcode::MMM:
 		{
 			if ( cleared )
 			{
@@ -100,17 +116,31 @@ void execute( const object::function* function )
 
 				cleared = true;
 			}
+
+			break;
 		}
-		else if ( OP == instruction::opcode::OOM )
+		case instruction::opcode::OOM:
 		{
 			std::printf( "%u\n", *sp );
+
+			break;
 		}
-		else if ( OP == instruction::opcode::oom )
+		case instruction::opcode::oom:
 		{
 			uint32_t integer = 0u;
 			uint32_t result = static_cast<uint32_t>(scanf_s( "%d", &integer )); // lets just hope scanf succeeds...
 
 			*sp = result;
+
+			break;
+		}
+		case instruction::opcode::mom: // please come pick me up im scared
+		{
+			return;
+		}
+		default:
+			__assume(false); // will never happen (unless someone mOO's a bogus instruction in which case we segfault) so optimize into jumptable
+
 		}
 
 		ip++;

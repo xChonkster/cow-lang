@@ -21,6 +21,7 @@ enum class opcode : uint8_t // opcodes fit in 4 bits
 	MMM,
 	OOM,
 	oom,
+	mom, // custom exit instruction
 };
 
 constexpr opcode INSN_OP( object::instruction insn )

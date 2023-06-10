@@ -19,7 +19,7 @@ int main()
 	const std::string compiled = cow::compiler::compile( source );
 
 	cow::vm::load( compiled );
-	
+
 	std::cin.get();
 }
 

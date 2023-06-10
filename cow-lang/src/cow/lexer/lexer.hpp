@@ -18,7 +18,8 @@ enum class token : uint16_t
 	ZeroMemory,				// OOO
 	ReadWriteRegister,		// MMM
 	PrintMemory,			// OOM
-	ReadInt					// oom
+	ReadInt,				// oom
+	Exit					// mom (not parsed)
 };
 
 std::vector<token> tokenize( const std::string& lexer );

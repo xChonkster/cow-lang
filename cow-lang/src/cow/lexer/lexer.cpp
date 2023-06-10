@@ -72,6 +72,8 @@ std::vector<token> tokenize( const std::string& content )
 			position++;
 	}
 
+	tokens.emplace_back( token::Exit ); // exit instruction
+
 	return tokens;
 }
 
